@@ -5,48 +5,18 @@
  */
 var convert = function(s, numRows) {
 
-    let prev = -1
-    let curr = 0
-    let maxRows = numRows -1
-
-    let getNextRow = function(curr, prev, maxRows){
-        if(curr == 0) return curr + 1
-        else if(curr == prev) return curr - 1
-        else if(curr == maxRows) return curr
-        else if(curr < prev) return curr - 1
-        else if(curr > prev) return curr + 1
+    if (numRows === 1) {
+        return s;
     }
-
-    let getNextChar = function(){
-        let nextChar = s.substring(0,1)
-        s = s.slice(1, s.length)
-        return nextChar
-    }
-
-    let rows = []
-    while(s.length != 0){
-
-        if(!rows[curr]) rows[curr] = []
-            
-        if(curr == prev){
-            rows[curr].push("")
-        } else if(prev < curr){
-            let char = getNextChar()
-            rows[curr].push(char)
-        } else {
-            let char = getNextChar()
-            rows[curr].push(char)
+    let result = "";
+    let step = 2 * numRows - 2;
+    for (let i = 0; i < numRows; i++) {
+        for (let j = i; j < s.length; j += step) {
+            result += s[j];
+            if (i !== 0 && i !== numRows - 1 && j + step - 2 * i < s.length) {
+                result += s[j + step - 2 * i];
+            }
         }
-
-        let previous = curr
-        curr = getNextRow(curr, prev, maxRows)
-        prev = previous
     }
-    
-    let word = ""
-    for(let row of rows){
-        word = word + row.join("")
-    }
-    
-    return word
+    return result;
 };
